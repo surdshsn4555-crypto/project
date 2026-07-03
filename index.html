@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Document</title>
+</head>
+
+<body class="relative">
+
+    <div class="flex h-screen -z-1">
+
+        <div class="left bg-red w-[16%] items-center gap-2 p-4 border-r-2 border-gray-100">
+            <div class="flex">
+                <i class="fa-solid fa-layer-group fa-2x"></i>
+                <div>
+                    <h1 class="text-xl font-bold">FinTrack Pro</h1>
+                    <span class="text-[12px]">Enterprise Finance</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-between h-[90%] mt-4">
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2 bg-blue-200 text-black p-2 rounded-md" id="dash">
+                        <i class="fa-solid fa-border-all"></i>
+                        <div>Dashboard</div>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-black p-2 rounded-md" id="sett">
+                        <i class="fa-solid fa-gear"></i>
+                        <div>Settings</div>
+                    </div>
+                </div>
+
+                <div id="addTrans"
+                    class="flex justify-center items-center gap-2 bg-black text-white p-2 rounded-md mt-4 cursor-pointer">
+                    <i class="fa-solid fa-plus"></i>
+                    <div id="addtransacton">
+                        Add Transaction
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <!-- right -->
+        <div class="right bg-white w-[84%] overflow-y-auto">
+
+            <!-- navbar -->
+            <nav class="flex gap-4 justify-end items-center p-4 border-b-2 border-gray-100">
+                <hr>
+                <div id="usernameSave">name</div>
+                <div id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </div>
+            </nav>
+
+            <!-- dashboard page -->
+            <section class="p-6" id="dashPage">
+
+                <div class="flex flex-col gap-2 mt-4">
+                    <span class="text-3xl font-bold">Financial Overview</span>
+                    <span class="text-sm">Real-time tracking application</span>
+                </div>
+
+                <!-- card  -->
+                <div class="grid grid-cols-4 gap-4 mt-4">
+
+                    <div class="border-gray-100 border-2 p-4 gap-2 flex flex-col rounded-xl">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-900 justify-center flex items-center rounded-xl"><i
+                                class="fa-solid fa-building-columns "></i></div>
+                        <div class="text-sm">Current Balance</div>
+                        <div class="text-2xl text-blue-900 font-bold"><span id="currentSymbol">$</span><span id="currentBalance">0.00</span></div>
+                    </div>
+
+                    <div class="border-gray-100 border-2 p-4 gap-2 flex flex-col rounded-xl">
+                        <div class="w-10 h-10 bg-green-100 text-green-900  justify-center flex items-center rounded-xl">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+                        <div class="text-sm">Total Income</div>
+                        <div class="text-2xl text-green-900 font-bold"><span id="incomeSymbol">$</span><span id="incomeBalance">0.00</span></div>
+                    </div>
+
+                    <div class="border-gray-100 border-2 p-4 gap-2 flex flex-col rounded-xl">
+                        <div class="w-10 h-10 bg-rose-100 text-rose-900  justify-center flex items-center rounded-xl"><i
+                                class="fa-solid fa-arrow-trend-down"></i></div>
+                        <div class="text-sm">Total Expense</div>
+                        <div class="text-2xl text-rose-900 font-bold"><span id="expenseSymbol">$</span><span id="expenseBalance">0.00</span></div>
+                    </div>
+
+                    <div class="border-gray-100 border-2 p-4 gap-2 flex flex-col rounded-xl">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-900 justify-center flex items-center rounded-xl"><i
+                                class="fa-solid fa-piggy-bank"></i></div>
+                        <div class="text-sm">Total Transactions</div>
+                        <div class="text-2xl text-blue-900 font-bold"><span id="transactionnumber">0</span></div>
+                    </div>
+
+                </div>
+
+                <!-- chart and dark mode -->
+                <!-- chart -->
+                <div class="mt-4 flex gap-4 w-full">
+                    <div class="border-gray-100 border-2 p-4 gap-2 flex flex-col rounded-xl w-[60%] h-[340px]">
+                        <div class="text-2xl font-bold">Cash Flow Analysis</div>
+                        <div class="w-full overflow-hidden">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- dark -->
+                    <div class="border-gray-100 border-2 p-3 gap-2 flex flex-col rounded-xl w-[40%] h-[180px]">
+                        <div class="text-2xl font-bold">Preferences</div>
+                        <div class="flex gap-2 items-center mt-4 justify-between">
+                            <div class="font-bold">Dark Mode</div>
+                            <div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <hr class="my-2 -mb-3">
+                        <div id="resetData"
+                            class="flex -mt-4 gap-2 items-center mt-4 justify-center cursor-pointer bg-red-100 py-2 rounded-md text-red-900">
+                            <i class="fa-solid fa-trash"></i>
+                            <div>Reset All Data</div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- All Transactions-->
+                <div>
+                    <div class="text-2xl font-bold">All Transactions</div>
+                    <div class="flex justify-between w-[60%]">
+                        <div class="flex items-center gap-2 border-gray-100 border-2 p-2 rounded-xl w-[60%]">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="search transaction" class="w-full outline-none">
+                        </div>
+                        <div class="flex items-center justify-between border-gray-100 border-2 p-2 rounded-xl w-[30%]">
+                            <select name="all" id="trans-drop" class="w-full outline-none">
+                                <option value="all">All Types</option>
+                                <option value="income">Income Only</option>
+                                <option value="expense">Expense Only</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- transaction task -->
+                    <div class="mt-4 border-gray-100 border-2 p-2 rounded-xl w-[60%]">
+                        <div class="grid grid-cols-5 gap-4 mt-4 border-b-2 border-gray-100 p-2">
+                            <div>DATE</div>
+                            <div>DESCRIPTION</div>
+                            <div>CATEGORY</div>
+                            <div>AMOUNT</div>
+                            <div>ACTIONS</div>
+                        </div>
+                        <!-- transaction task when add -->
+
+                        <div id="transTask"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- settings page -->
+            <section class="p-6 hidden" id="settingPage">
+
+                <div class="w-[80%]">
+                    <div class="flex flex-col text-2xl font-bold gap-2 p-4">
+                        Settings
+                        <span class="text-sm font-extralight">Manage your account profile and app formatting.</span>
+
+                    </div>
+                    <div class="flex flex-col gap-4 p-4 bg-white border-gray-100 border-2 rounded-xl w-[60%] shadow-lg">
+                        <div class="text-2xl font-bold">Profile Details</div>
+                        <div class="flex justify-between gap-4">
+                            <div class="flex items-center gap-2 border-gray-100 border-2 p-2 rounded-xl w-[60%]">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" value="admin" class="w-full outline-none" id="profileUser">
+                            </div>
+                            <div
+                                class="flex items-center justify-between border-gray-100 border-2 p-2 rounded-xl w-[60%]">
+                                <select name="all" id="transDrop" class="w-full outline-none">
+                                    <option value="USD">USD ($)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                    <option value="GBP">GBP (£)</option>
+                                    <option value="INR">INR (₹)</option>
+                                    <option value="JPY">JPY (¥)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="saveUpdateData"
+                            class="bg-black text-white p-2 rounded-md mt-4 cursor-pointer flex justify-center items-center gap-2 w-[30%]">
+                            save
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+    </div>
+
+    <!-- Add Transacton -->
+    <section id="TransactionLayout" class="flex h-screen justify-center items-center bg-gray-10 absolute top-0 left-0 w-full h-full hidden bg-opacity-50 z-10"
+        id="addTransactonSection">
+        <div class="flex flex-col gap-4 w-[30%] h-[65%] bg-white border-gray-100 border-2 rounded-xl shadow-lg p-4" id="addTransacton">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold">Add Transacton</div>
+                <i class="fa-solid fa-xmark" id="closeBtn"></i>
+            </div>
+
+            <!-- type -->
+            <div>
+                <div>Type</div>
+                <select name="type" id="transType" class="w-full border-gray-100 border-2 p-2 rounded-xl">
+                    <option value="income">Income</option>
+                    <option value="expense">Expense</option>
+                </select>
+            </div>
+
+            <!-- description  -->
+            <div>
+                <div>Description</div>
+                <input type="text" placeholder="e.g. Amazon, Salary, coffee" id="transDesc" class="w-full border-gray-100 border-2 p-2 rounded-xl">
+            </div>
+
+            <!-- amount and date -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <div>Amount</div>
+                    <input type="number" placeholder="e.g. 1000" id="transAmount" class="w-full border-gray-100 border-2 p-2 rounded-xl">
+                </div>
+                <div>
+                    <div>Date</div>
+                    <input type="date" id="transDate" class="w-full border-gray-100 border-2 p-2 rounded-xl">
+                </div>
+            </div>
+
+            <!-- category -->
+            <div>
+                <div>Category</div>
+                <select name="category" id="transCategory" class="w-full border-gray-100 border-2 p-2 rounded-xl">
+                    <option value="salary">Salary</option>
+                    <option value="food">Food</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="transportation">Transportation</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="education">Education</option>
+                    <option value="utilities">Utilities</option>
+                    <option value="travel">Travel</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <!-- add transaction button -->
+            <div>
+                <div
+                    class="bg-black text-white p-2 rounded-md mt-4 cursor-pointer flex justify-center items-center gap-2"
+                    id="addTransBtn">
+                    Save Transaction
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
