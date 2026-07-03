@@ -1,33 +1,60 @@
-// register code
-let regUsername = document.querySelector("#regUsrename");
-let regPasswd = document.querySelector("#regPasswd");
-let regBtn = document.querySelector("#regBtn");
-let passwdEye = document.querySelector("#passwdEye");
 
-passwdEye.addEventListener("click", function () {
-    if (regPasswd.type === "password") {
-        regPasswd.type = "text";
-        passwdEye.classList.remove("fa-eye-slash");
-        passwdEye.classList.add("fa-eye");
+
+// Get Elements
+const regBtn = document.getElementById("regBtn");
+const usernameInput = document.getElementById("regUsrename");
+const passwordInput = document.getElementById("regPasswd");
+const eyeIcon = document.getElementById("passwdEye");
+
+// Show/Hide Password
+eyeIcon.addEventListener("click", () => {
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
     } else {
-        regPasswd.type = "password";
-        passwdEye.classList.remove("fa-eye");
-        passwdEye.classList.add("fa-eye-slash");
+        passwordInput.type = "password";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
     }
 });
 
-regBtn.addEventListener("click", function () {
-    regUsername = regUsername.value;
-    regPasswd = regPasswd.value;
+// Register User
+regBtn.addEventListener("click", () => {
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
 
-    if (regUsername === "" || regPasswd === "") {
-        alert("Please fill in all fields");
+    // Validate inputs
+    if (username === "" || password === "") {
+        alert("Please fill in all fields.");
         return;
     }
 
-    localStorage.setItem("username", regUsername);
-    localStorage.setItem("password", regPasswd);
-    localStorage.setItem("isLoggedIn", "true");
+    // Check if user already exists
+    const existingUser = JSON.parse(localStorage.getItem("user"));
 
-    window.location.href = "index.html";
+    if (existingUser && existingUser.username === username) {
+        alert("Username already exists. Please choose another username.");
+        return;
+    }
+
+    // Save user
+    const user = {
+        username: username,
+        password: password
+    };
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    alert("Registration Successful!");
+
+    // Redirect to login page
+    window.location.href = "login.html";
+});
+
+// Press Enter to Register
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        regBtn.click();
+    }
 });
